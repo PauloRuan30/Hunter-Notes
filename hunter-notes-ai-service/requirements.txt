@@ -1,3 +1,0 @@
-Flask
-Pillow
-# Future: Agno specific libraries, e.g., tensorflow, pytorch, opencv-python, etc.

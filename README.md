@@ -26,6 +26,8 @@ The project aims to provide an interactive and visually authentic experience for
 
 ### Frontend (SvelteKit)
 
+**Prerequisite:** Ensure the **Backend (Golang API)** is running before starting the frontend.
+
 1.  Navigate to the `hunter-notes-frontend` directory:
     ```bash
     cd hunter-notes-frontend
@@ -38,7 +40,7 @@ The project aims to provide an interactive and visually authentic experience for
     ```bash
     npm run dev -- --open
     ```
-    The application should open in your browser, displaying the monster list.
+    The application should open in your browser, displaying the monster list, with data fetched from the Go API.
 
 ### Backend (Golang API)
 
@@ -50,7 +52,7 @@ The project aims to provide an interactive and visually authentic experience for
     ```bash
     go run main.go
     ```
-    The Go API will run on `http://localhost:8080`.
+    The Go API will run on `http://localhost:8080`, serving monster data to the frontend.
 
 ### AI Service (Python)
 
