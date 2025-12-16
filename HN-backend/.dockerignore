@@ -1,0 +1,10 @@
+.git
+.gitignore
+Dockerfile
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+bin/
+pkg/

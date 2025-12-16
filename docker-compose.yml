@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  # Frontend Service (Svelte)
+  frontend:
+    build:
+      context: ./HN-frontend
+    container_name: hn_frontend
+    ports:
+      - "5173:80" # Map host port 5173 to container port 80 (Nginx default)
+    depends_on:
+      - backend
+    networks:
+      - hunter_net
+
+  # Backend Service (Go)
+  backend:
+    build:
+      context: ./HN-backend
+    container_name: hn_backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      # It's recommended to use a .env file for these variables
+      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?sslmode=disable
+    networks:
+      - hunter_net
+
+  # AI Service (Python)
+  ai-service:
+    build:
+      context: ./HN-ai-service
+    container_name: hn_ai_service
+    # If the AI service runs a web server, expose the port. For example:
+    # ports:
+    #   - "8001:8000"
+    networks:
+      - hunter_net
+
+  # PostgreSQL Database
+  db:
+    image: postgres:15-alpine
+    container_name: hn_db
+    environment:
+      # Define your PostgreSQL credentials.
+      # For production, use environment variables from a .env file or a secret management tool.
+      POSTGRES_USER: ${POSTGRES_USER:-hunter}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${POSTGRES_DB:-hunter_notes}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432" # Expose postgres port to the host for debugging/connecting
+    networks:
+      - hunter_net
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  hunter_net:
+    driver: bridge
